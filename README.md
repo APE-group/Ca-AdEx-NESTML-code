@@ -16,5 +16,5 @@ Instructions:
     > python build_ca_adex.py
 5) Check the correct installation of the ca_adex module in NEST:
     the file ca_adex_module.so must be present in the folder
-   < NEST-installation-path >/lib64/nest/
+   >  < NEST-installation-path >/lib64/nest/
 7) Execute the examples contained in this repository 
