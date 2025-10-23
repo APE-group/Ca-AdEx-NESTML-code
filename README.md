@@ -1,7 +1,8 @@
 This repository contains the nestml description of the Ca-AdEx two-compartment neuron model [1]
 with a few example of usage of this model in NEST simulations.
 
-[1] Pastorelli E. et al. (2025). Simplified two-compartment neuron with calcium dynamics
+[1] Pastorelli E., Yegenoglu A., Kolodziej N., Wybo W., Simula F., Diaz-Pier S.,
+    Storm J.F. Paolucci P.S. (2025). Simplified two-compartment neuron with calcium dynamics
     capturing brain-state specific apical-amplification, -isolation and -drive.
     Front. Comput. Neurosci. DOI: https://doi.org/10.3389/fncom.2025.1566196
 
