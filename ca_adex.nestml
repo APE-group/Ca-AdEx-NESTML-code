@@ -92,11 +92,11 @@ model ca_adex:
 
         # Soma
 	
-	# ALPHA synapse exc - soma
-	kernel g_exc_s = (e / tau_syn_exc_s) * t * exp(-t / tau_syn_exc_s)
+        # ALPHA synapse exc - soma
+        kernel g_exc_s = (e / tau_syn_exc_s) * t * exp(-t / tau_syn_exc_s)
         inline I_syn_exc_s pA = convolve(g_exc_s, exc_spikes_soma) * nS * (V_bounded_s - E_exc_s)
 	
-	# ALPHA synapse inh - soma
+        # ALPHA synapse inh - soma
         kernel g_inh_s = (e / tau_syn_inh_s) * t * exp(-t / tau_syn_inh_s)
         inline I_syn_inh_s pA = convolve(g_inh_s, inh_spikes_soma) * nS * (V_bounded_s - E_inh_s)
 	
@@ -109,12 +109,12 @@ model ca_adex:
 
         # Distal
 
-	# ALPHA synapse exc - distal
+        # ALPHA synapse exc - distal
         kernel g_exc_d = (e / tau_syn_exc_d) * t * exp(-t / tau_syn_exc_d)
-	inline I_syn_exc_d pA = convolve(g_exc_d, exc_spikes_distal) * nS * (V_bounded_d - E_exc_d)
+        inline I_syn_exc_d pA = convolve(g_exc_d, exc_spikes_distal) * nS * (V_bounded_d - E_exc_d)
 	
-	# ALPHA synapse inh - distal
-	kernel g_inh_d = (e / tau_syn_inh_d) * t * exp(-t / tau_syn_inh_d)
+        # ALPHA synapse inh - distal
+        kernel g_inh_d = (e / tau_syn_inh_d) * t * exp(-t / tau_syn_inh_d)
         inline I_syn_inh_d pA = convolve(g_inh_d, inh_spikes_distal) * nS * (V_bounded_d - E_inh_d)
 
         # AMPA synapse - distal
@@ -125,18 +125,18 @@ model ca_adex:
         kernel g_beta = g_norm_beta * ( - exp(-t / tau_r_beta) + exp(-t / tau_d_beta) )
         recordable inline I_BETA_d pA = convolve(g_beta, spikes_beta_d) * nS * (e_L_beta - V_m_d)
 
-	# AMPA-NMDA synapse - distal
+        # AMPA-NMDA synapse - distal
         kernel g_nmda = g_norm_nmda * ( - exp(-t / tau_r_nmda) + exp(-t / tau_d_nmda) )
         inline I_AMPA_NMDA_d pA = convolve(g_ampa, spikes_ampa_nmda_d) * nS * (e_L_AMPA_NMDA - V_m_d) + nmda_ratio * \
                                   convolve(g_nmda, spikes_ampa_nmda_d) * nS * (e_L_AMPA_NMDA - V_m_d) / (1. + 0.3 * exp( -.1 * V_m_d ))
 
-	recordable inline mh real = m_Ca * h_Ca
+        recordable inline mh real = m_Ca * h_Ca
         recordable inline e_Ca mV = e_Ca_calc(k_Ca, R_Ca, T_Ca, c_Ca_o, c_Ca, F_Ca)
         recordable inline I_Ca pA = gbar_Ca * m_Ca * h_Ca * (e_Ca - V_m_d)
         recordable inline I_K pA = gbar_K_Ca * m_K * (e_K - V_m_d)
         recordable inline I_C_d pA = g_C_d * (V_m_d - V_m_s)    # Coupling current
 
-	V_m_d' = (-g_L_d * (V_bounded_d - e_L_d) - I_syn_exc_d - I_syn_inh_d + I_AMPA_d + I_BETA_d + I_AMPA_NMDA_d + I_Ca + I_K + I_e_d + I_stim_d - I_C_d) / C_m_d
+        V_m_d' = (-g_L_d * (V_bounded_d - e_L_d) - I_syn_exc_d - I_syn_inh_d + I_AMPA_d + I_BETA_d + I_AMPA_NMDA_d + I_Ca + I_K + I_e_d + I_stim_d - I_C_d) / C_m_d
         m_Ca' = (m_inf_Ca(V_m_d) - m_Ca) / tau_m
         h_Ca' = (h_inf_Ca(V_m_d) - h_Ca) / tau_h
         c_Ca' = phi * I_Ca + (Ca_0 - c_Ca) / tau_decay_Ca
@@ -233,11 +233,11 @@ model ca_adex:
         nmda_ratio real = 2.0
 
     internals:
-	## AMPA
+        ## AMPA
         tp_ampa real = (tau_r_ampa * tau_d_ampa) / (tau_d_ampa - tau_r_ampa) * ln( tau_d_ampa / tau_r_ampa )
         g_norm_ampa real =  1. / ( -exp( -tp_ampa / tau_r_ampa ) + exp( -tp_ampa / tau_d_ampa ) )
 
-	## NMDA
+        ## NMDA
         tp_nmda real = (tau_r_nmda * tau_d_nmda) / (tau_d_nmda - tau_r_nmda) * ln( tau_d_nmda / tau_r_nmda )
         g_norm_nmda real =  1. / ( -exp( -tp_nmda / tau_r_nmda ) + exp( -tp_nmda / tau_d_nmda ) )
 
