@@ -192,7 +192,7 @@ model ca_adex:
         Ca_th mmol = 0.00043 mmol		# Calcium concentration threshold
         Ca_0 mmol = 0.0001 mmol  		# Baseline intra-cellular Ca concentration
 	
-        tau_decay_Ca ms = 103.57233790866408 ms # Ca current activating function time constant
+        tau_decay_Ca ms = 103.57233790866408 ms # Ca current decay time constant
 
         m_slope real = 0.5		        # Ca current activating function slope
         m_half mV = -9 mV			# Ca current activating function half voltage
