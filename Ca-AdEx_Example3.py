@@ -27,6 +27,7 @@
 
 import nest
 import matplotlib.pyplot as plt
+import numpy as np
 
 default_param = {'C_m_d': 23.67372778891213, 'C_m_s': 246.7882968598874, 'Ca_0': 0.0001, 'Ca_th': 0.00043,
                  'V_reset': -61.73952230767877, 'd_BAP': 0.1195980511869619, 'delta_T': 2.0, 'e_K': -90.0,
@@ -70,6 +71,9 @@ I_d = 50
 
 neuron_names = ["ca_adex", "ca_adex_alt"]
 res_cm = []
+rec_list = ['V_m_s', 'V_m_d', 'w',
+            'm_Ca', 'h_Ca', 'I_Ca', 'c_Ca', 'e_Ca',
+            'm_K', 'I_K']
 
 # Creation of actual simulation starts from here
 for neuron_name in neuron_names:
@@ -77,7 +81,7 @@ for neuron_name in neuron_names:
 
     nest.Install('ca_adex_module')
 
-    cm = nest.Create("ca_adex", params=cm_params)
+    cm = nest.Create(neuron_name, params=cm_params)
     receptor_types = cm.get("receptor_types")
     print(" ")
     print("cm neuron properties: ", cm.get())
@@ -114,9 +118,6 @@ for neuron_name in neuron_names:
         'receptor_type': receptor_types['SPIKES_AMPA_NMDA_D']})
 
     # create multimeters to record compartment voltages and various state variables
-    rec_list = ['V_m_s', 'V_m_d', 'w',
-                'm_Ca', 'h_Ca', 'I_Ca', 'c_Ca', 'e_Ca',
-                'm_K', 'I_K']
     mm_cm = nest.Create('multimeter', 1, {'record_from': rec_list, 'interval': .1})
     nest.Connect(mm_cm, cm)
 
@@ -135,6 +136,11 @@ for neuron_name in neuron_names:
 
     print("Spike times multiComp:\n")
     print(events_cm['times'])
+
+# Save the data into a file
+keys = ['times'] + rec_list
+full_arr = np.column_stack([np.asarray(res_cm[0][k], dtype=float) for k in keys])
+np.savetxt("ca_adex_nest_data.txt", full_arr, delimiter='\t', fmt="%f")
 
 xlimStart = 0
 xlimEnd = SimTime

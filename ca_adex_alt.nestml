@@ -1,42 +1,77 @@
-#aeif_cond_alpha - Conductance based exponential integrate-and-fire neuron model
-################################################################################
+#ca_adex_alt - Two compartment Ca-AdEx neuron NESTML description
+################################################################
+#
+#  Copyright © 2025   Elena Pastorelli          <elena.pastorelli@roma1.infn.it>
+#  Copyright © 2025   Pier Stanislao Paolucci   <pier.paolucci@roma1.infn.it>
+#  Copyright © 2025   Pooja Babu                <p.babu@fz-juelich.de>
+#
+#  SPDX-License-Identifier: GPL-3.0-only
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  Note: Please keep the list of original authors and feel free to
+#  add your name if you make substantial contributions, in accordance
+#  with the GPL-3 license.
+#
+#
 #
 #Description
 #+++++++++++
 #
-#aeif_cond_alpha is the adaptive exponential integrate and fire neuron according to Brette and Gerstner (2005), with post-synaptic conductances in the form of a bi-exponential ("alpha") function.
+#ca_adex_alt is the two compartment spiking neuron that implements the calcium spikes according to Pastorelli et al. (2025)[1].
+#This is an alternate modle description of ``ca_adex.nestml``, where the covolutions are replaced by second-order ODEs and correspoding onReceive blocks for the spike events.
 #
-#The membrane potential is given by the following differential equation:
+#Neuronal equations:
+#
+# Somatic compartment:
+#.. math::
+#
+#   C_m^s \frac{dV^s}{dt} &=
+#   -g_L^s(V^s-E_L^s)+g_L^s\Delta_T\exp\left(\frac{V^s-V_{th}^s}{\Delta_T}\right) +
+#   - g_e^s(t)(V^s-E_e^s)-g_i^s(t)(V^s-E_i^s) +
+#   - g_w w + I_e^s - g_C(V^s-V^d)
+#
+#Adaptation:
 #
 #.. math::
 #
-#   C_m \frac{dV_m}{dt} =
-#   -g_L(V_m-E_L)+g_L\Delta_T\exp\left(\frac{V_m-V_{th}}{\Delta_T}\right) -
-# g_e(t)(V_m-E_e) \\
-#                                                     -g_i(t)(V_m-E_i)-w + I_e
+#    \tau_w \frac{dw}{dt} &= a(V^s-E_L^s) +b\sum_{k}\delta (t-t_{k}) - w
 #
-#and
+#Distal compartment
 #
 #.. math::
 #
-# \tau_w \frac{dw}{dt} = a(V_m-E_L) - w
+#   C_m^d \frac{dV^d}{dt} =
+#   -g_L^d(V^d-E_L^d) - g_e^d(t)(V^d-E_e^d)-g_i^d(t)(V^d-E_i^d) +
+#   + I_{Ca} + I_{K_{Ca}} + w_{BAP}\sum_{k}\delta (t-(t_{k}+d_{BAP}))+
+#   + I_e^d + g_C(V^d-V^s)
 #
-#Note that the membrane potential can diverge to positive infinity due to the exponential term. To avoid numerical instabilities, instead of :math:`V_m`, the value :math:`\min(V_m,V_{peak})` is used in the dynamical equations.
+#Ca concentration:
+#
+#.. math::
+#
+#   \frac{d[Ca]}{dt} &= \phi_{Ca}I_{Ca} - \frac{[Ca] - [Ca]_0}{\tau_{Ca}}
+#
 #
 #
 #References
 #++++++++++
 #
-#.. [1] Brette R and Gerstner W (2005). Adaptive exponential
-#       integrate-and-fire model as an effective description of neuronal
-#       activity. Journal of Neurophysiology. 943637-3642
-#       DOI: https://doi.org/10.1152/jn.00686.2005
-#
-#
-#See also
-#++++++++
-#
-#iaf_cond_alpha, aeif_cond_exp
+#.. [1] Pastorelli E., Yegenoglu A., Kolodziej N., Wybo W., Simula F., Diaz-Pier S.,
+#   	Storm J.F., Paolucci P.S. (2025). Simplified two-compartment neuron with calcium dynamics
+#       capturing brain-state specific apical-amplification, -isolation and -drive.
+#       Front. Comput. Neurosci. DOI: https://doi.org/10.3389/fncom.2025.1566196
 
 model ca_adex_alt:
 

@@ -17,5 +17,5 @@ def generate_code(with_alt_version=False):
 
 
 if __name__ == "__main__":
-    with_alt_version = True
-    generate_code(with_alt_version)
+    alt_version = True
+    generate_code(alt_version)
