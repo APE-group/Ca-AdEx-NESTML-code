@@ -30,7 +30,7 @@
 #+++++++++++
 #
 #ca_adex_alt is the two compartment spiking neuron that implements the calcium spikes according to Pastorelli et al. (2025)[1].
-#This is an alternate modle description of ``ca_adex.nestml``, where the covolutions are replaced by second-order ODEs and correspoding onReceive blocks for the spike events.
+#This is an alternate model description of ``ca_adex.nestml``, where the convolutions are replaced by second-order ODEs and corresponding ``onReceive`` blocks for the spike events.
 #
 #Neuronal equations:
 #
